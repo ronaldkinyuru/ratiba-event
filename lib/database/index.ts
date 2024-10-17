@@ -9,10 +9,10 @@ interface MongooseCache {
 
 // Extending the NodeJS global type
 declare global {
-  var mongoose: MongooseCache; // This is necessary to avoid "global" typing issues
+  let mongoose: MongooseCache; // Use let instead of var
 }
 
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
+let cached: MongooseCache = global.mongoose || { conn: null, promise: null }; // 'cached' can use const
 
 export const connectToDatabase = async () => {
   if (cached.conn) return cached.conn;
