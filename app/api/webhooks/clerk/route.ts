@@ -58,14 +58,15 @@ export async function POST(req: Request) {
  
   if(eventType === 'user.created') {
     const { id, email_addresses, first_name, last_name, username } = evt.data;
-
+    
     const user = {
       clerkId: id,
-      email: email_addresses[0].email_address,
-      username: username!,
-      firstName: first_name,
-      lastName: last_name,
-    }
+      email: email_addresses?.[0]?.email_address ?? 'no-email@example.com',
+      username: username ?? 'defaultUsername',
+      firstName: first_name ?? '',  // Provide an empty string if first_name is null
+      lastName: last_name ?? '',    // Provide an empty string if last_name is null
+    };
+
 
     const newUser = await createUser(user);
 
