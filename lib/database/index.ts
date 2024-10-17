@@ -1,3 +1,4 @@
+// lib/database/index.ts
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -21,6 +22,9 @@ export const connectToDatabase = async () => {
   });
 
   cached.conn = await cached.promise;
+
+  // Update the global mongoose reference
+  global.mongoose = cached.conn;
 
   return cached.conn;
 };

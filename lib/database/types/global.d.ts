@@ -1,9 +1,9 @@
-import { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 
 declare global {
   namespace NodeJS {
     interface Global {
-      mongoose: Mongoose | undefined;
+      mongoose: typeof mongoose | null;
     }
   }
 }
