@@ -4,6 +4,7 @@ import { connectToDatabase } from "../database"
 import User from '@/lib/database/models/user.model'
 import { handleError } from "../utils"
 import { CreateUserParams, UpdateUserParams } from "@/types"
+import { revalidatePath } from "next/cache"
 
 
 
@@ -58,16 +59,7 @@ export async function deleteUser(clerkId: string) {
     }
 
     // Unlink relationships
-    await Promise.all([
-      // Update the 'events' collection to remove references to the user
-      Event.updateMany(
-        { _id: { $in: userToDelete.events } },
-        { $pull: { organizer: userToDelete._id } }
-      ),
-
-      // Update the 'orders' collection to remove references to the user
-      Order.updateMany({ _id: { $in: userToDelete.orders } }, { $unset: { buyer: 1 } }),
-    ])
+   
 
     // Delete user
     const deletedUser = await User.findByIdAndDelete(userToDelete._id)
