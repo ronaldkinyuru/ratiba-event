@@ -12,7 +12,7 @@ declare global {
   let mongoose: MongooseCache; // Use let instead of var
 }
 
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null }; // 'cached' can use const
+const cached: MongooseCache = global.mongoose || { conn: null, promise: null }; // 'cached' can use const
 
 export const connectToDatabase = async () => {
   if (cached.conn) return cached.conn;
