@@ -2,17 +2,13 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-interface MongooseCache {
+type MongooseCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
-}
+};
 
-// Extending the NodeJS global type
-declare global {
-  let mongoose: MongooseCache; // Use let instead of var
-}
-
-const cached: MongooseCache = global.mongoose || { conn: null, promise: null }; // 'cached' can use const
+// Use 'const' for cached variable as it is never reassigned
+const cached: MongooseCache = global.mongoose || { conn: null, promise: null };
 
 export const connectToDatabase = async () => {
   if (cached.conn) return cached.conn;
@@ -25,9 +21,6 @@ export const connectToDatabase = async () => {
   });
 
   cached.conn = await cached.promise;
-
-  // Cache the mongoose connection in global to reuse it in the future
-  global.mongoose = cached;
 
   return cached.conn;
 };
